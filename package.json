@@ -1,0 +1,34 @@
+{
+  "name": "playwright-e2e-framework",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright E2E framework whose page objects are runner-agnostic — the same screens drive @playwright/test specs and runner-less journeys via playwright-standalone.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "test-automation",
+    "page-object-model",
+    "typescript",
+    "sdet"
+  ],
+  "author": "Bhushan Upwanshi (https://github.com/BhushanUpwanshi)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^20.19.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "dependencies": {
+    "playwright-standalone": "^0.1.0"
+  }
+}
