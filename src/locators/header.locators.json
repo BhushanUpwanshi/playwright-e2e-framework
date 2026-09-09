@@ -1,0 +1,10 @@
+{
+  "primary": "[data-test=\"primary-header\"]",
+  "pageTitle": "[data-test=\"title\"]",
+  "cartLink": "[data-test=\"shopping-cart-link\"]",
+  "cartBadge": "[data-test=\"shopping-cart-badge\"]",
+  "menuButton": "#react-burger-menu-btn",
+  "closeMenuButton": "#react-burger-cross-btn",
+  "logoutLink": "[data-test=\"logout-sidebar-link\"]",
+  "resetAppStateLink": "[data-test=\"reset-sidebar-link\"]"
+}

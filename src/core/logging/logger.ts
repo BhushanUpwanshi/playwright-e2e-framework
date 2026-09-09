@@ -1,9 +1,50 @@
 /**
- * Console logging that prefixes each line with the caller's source location.
+ * Logging for the framework.
  *
- * The location is recovered from the stack trace, so a log line points at the
- * code that produced it rather than at this file.
+ * Output goes through a replaceable **sink** rather than straight to the
+ * console. The interaction layer logs every action, which is what you want when
+ * a journey fails — and which floods a test report when a hundred of them pass.
+ * Where those lines should go depends on who is running the code:
+ *
+ * - a runner-less journey → the console, because stdout *is* the report
+ * - a Playwright spec → attached to the test, so the log survives with the
+ *   failure it belongs to instead of scrolling past
+ * - the framework's own tests → discarded, except where the log is the thing
+ *   under test
+ *
+ * A sink keeps that decision with the caller, and keeps `@playwright/test` out
+ * of `core/` — the layering rule the whole repo rests on.
  */
+
+/** Severity of a log line. */
+export type LogLevel = 'info' | 'warn';
+
+/** Receives log lines. */
+export type LogSink = (level: LogLevel, message: string) => void;
+
+const consoleSink: LogSink = (level, message) => {
+    if (level === 'warn') console.warn(message);
+    else console.log(message);
+};
+
+let activeSink: LogSink = consoleSink;
+
+/**
+ * Redirects log output.
+ *
+ * @param sink - Where lines should go. Pass `null` to restore the console.
+ *
+ * @example
+ * ```ts
+ * const lines: string[] = [];
+ * setLogSink((_, message) => lines.push(message));
+ * // ...
+ * setLogSink(null);
+ * ```
+ */
+export function setLogSink(sink: LogSink | null): void {
+    activeSink = sink ?? consoleSink;
+}
 
 /** How far up the stack the actual caller sits, past `Error` and `log` itself. */
 const CALLER_FRAME_INDEX = 2;
@@ -26,7 +67,7 @@ function callerLocation(): string {
 /**
  * Logs a message prefixed with the caller's location.
  *
- * @param args - Values to log, forwarded to `console.log` unchanged.
+ * @param args - Values to log.
  *
  * @example
  * ```ts
@@ -35,34 +76,33 @@ function callerLocation(): string {
  * ```
  */
 export function log(...args: unknown[]): void {
-    console.log(`${callerLocation()} >`, ...args);
+    activeSink('info', `${callerLocation()} > ${args.map(String).join(' ')}`);
 }
 
 /**
  * Logs a warning prefixed with the caller's location.
  *
- * @param args - Values to log, forwarded to `console.warn` unchanged.
+ * @param args - Values to log.
  */
 export function warn(...args: unknown[]): void {
-    console.warn(`${callerLocation()} > WARN`, ...args);
+    activeSink('warn', `${callerLocation()} > WARN ${args.map(String).join(' ')}`);
 }
 
 /**
  * Logs the outcome of a browser action, without a source location.
  *
  * Location is deliberately omitted. {@link log} reports its immediate caller, so
- * routing action output through it stamps every single line with `action.ts` —
- * the same prefix on every line, naming the wrapper rather than the code that
- * asked for the action. The description carries the meaning here, so the prefix
- * is noise at best and misleading at worst.
+ * routing action output through it stamps every line with `action.ts` — the same
+ * prefix everywhere, naming the wrapper rather than the code that asked for the
+ * action. The description carries the meaning here.
  *
  * @param succeeded - Whether the action completed.
  * @param description - What was attempted.
  * @param reason - Failure detail, when it did not.
  */
 export function logAction(succeeded: boolean, description: string, reason?: string): void {
-    const line = succeeded ? `✓ ${description}` : `✗ ${description} — ${reason ?? 'failed'}`;
-    (succeeded ? console.log : console.warn)(line);
+    if (succeeded) activeSink('info', `✓ ${description}`);
+    else activeSink('warn', `✗ ${description} — ${reason ?? 'failed'}`);
 }
 
 /**

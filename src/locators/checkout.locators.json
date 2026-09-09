@@ -1,0 +1,22 @@
+{
+  "firstNameInput": "[data-test=\"firstName\"]",
+  "lastNameInput": "[data-test=\"lastName\"]",
+  "postalCodeInput": "[data-test=\"postalCode\"]",
+  "continueButton": "[data-test=\"continue\"]",
+  "cancelButton": "[data-test=\"cancel\"]",
+  "errorMessage": "[data-test=\"error\"]",
+
+  "summaryList": "[data-test=\"cart-list\"]",
+  "summaryItem": "[data-test=\"cart-list\"] [data-test=\"inventory-item\"]",
+  "paymentInformation": "[data-test=\"payment-info-value\"]",
+  "shippingInformation": "[data-test=\"shipping-info-value\"]",
+  "subtotalLabel": "[data-test=\"subtotal-label\"]",
+  "taxLabel": "[data-test=\"tax-label\"]",
+  "totalLabel": "[data-test=\"total-label\"]",
+  "finishButton": "[data-test=\"finish\"]",
+
+  "completeHeader": "[data-test=\"complete-header\"]",
+  "completeText": "[data-test=\"complete-text\"]",
+  "backHomeButton": "[data-test=\"back-to-products\"]",
+  "generatePdfButton": "[data-test=\"generate-pdf-order\"]"
+}

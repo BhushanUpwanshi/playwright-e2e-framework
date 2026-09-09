@@ -1,0 +1,8 @@
+{
+  "list": "[data-test=\"cart-list\"]",
+  "item": "[data-test=\"cart-list\"] [data-test=\"inventory-item\"]",
+  "itemName": "[data-test=\"inventory-item-name\"]",
+  "itemPrice": "[data-test=\"inventory-item-price\"]",
+  "itemQuantity": "[data-test=\"item-quantity\"]",
+  "checkoutButton": "[data-test=\"checkout\"]"
+}

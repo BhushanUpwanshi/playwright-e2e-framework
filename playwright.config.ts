@@ -2,17 +2,26 @@ import { defineConfig, devices } from '@playwright/test';
 import { BASE_URLS, ENV, TIMEOUTS } from '@core/config/env';
 
 /**
- * Configuration for the `@playwright/test` suite only.
+ * Configuration for everything `@playwright/test` runs.
  *
- * `testDir` points at `tests/runner` rather than `tests`, because `tests/standalone`
- * holds plain Node journeys driven by `playwright-standalone` — those are executed
- * with `tsx`, not by this runner, and must not be collected here.
+ * Two projects, because the repo has two kinds of test with different needs:
+ *
+ * - `core` tests the framework itself — `src/core`. Mostly pure assertions, with
+ *   browser-backed cases served from an intercepted fake origin, so it needs no
+ *   network and no application to be up.
+ * - `e2e` tests the application through the screens.
+ *
+ * There is deliberately no second test runner. `@playwright/test` already
+ * provides `expect`, fixtures and a reporter, so adding one would mean two
+ * assertion libraries and two reports for one repo.
+ *
+ * `tests/standalone` appears under neither project: those are plain Node
+ * journeys driven by `playwright-standalone` and run with `tsx`, so this runner
+ * must not collect them.
  *
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-    testDir: './tests/runner',
-
     /* Every spec file runs in parallel with the others. */
     fullyParallel: true,
 
@@ -47,7 +56,13 @@ export default defineConfig({
 
     projects: [
         {
-            name: 'chromium',
+            name: 'core',
+            testDir: './tests/core',
+            use: { ...devices['Desktop Chrome'] },
+        },
+        {
+            name: 'e2e',
+            testDir: './tests/runner',
             use: { ...devices['Desktop Chrome'] },
         },
     ],
