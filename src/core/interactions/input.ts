@@ -69,26 +69,6 @@ export async function selectOption(
 }
 
 /**
- * Attaches one or more files to a file input.
- *
- * @param page - Page holding the input.
- * @param selector - Selector for the `<input type="file">`.
- * @param filePaths - Absolute path, or paths, of the files to attach.
- * @param timeout - How long to wait for the input, in milliseconds.
- */
-export async function uploadFiles(
-    page: Page,
-    selector: string,
-    filePaths: string | string[],
-    timeout: number = TIMEOUTS.action
-): Promise<void> {
-    const paths = Array.isArray(filePaths) ? filePaths : [filePaths];
-    await action(`upload ${paths.length} file(s) to ${selector}`, async () => {
-        await page.locator(selector).setInputFiles(paths, { timeout });
-    });
-}
-
-/**
  * Presses a key while an element holds focus.
  *
  * @param page - Page holding the element.

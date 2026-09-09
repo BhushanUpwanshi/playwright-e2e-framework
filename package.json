@@ -5,6 +5,8 @@
   "description": "Playwright E2E framework whose page objects are runner-agnostic — the same screens drive @playwright/test specs and runner-less journeys via playwright-standalone.",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "test:core": "vitest run",
+    "test:core:watch": "vitest",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "report": "playwright show-report"
@@ -26,7 +28,8 @@
     "@playwright/test": "^1.62.1",
     "@types/node": "^20.19.0",
     "tsx": "^4.20.0",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.7"
   },
   "dependencies": {
     "playwright-standalone": "^0.1.0"
