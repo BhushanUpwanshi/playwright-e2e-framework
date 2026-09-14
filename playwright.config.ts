@@ -37,9 +37,25 @@ export default defineConfig({
     timeout: 60_000,
     expect: { timeout: TIMEOUTS.expect },
 
+    /*
+     * The two report formats need different handling, because they are shaped
+     * differently:
+     *
+     * - **Allure** writes one file per result into a shared directory and clears
+     *   nothing, so the runner-less journeys write into the same `allure-results`
+     *   and a single report covers every engine.
+     * - **CTRF** is one JSON document per run. Pointing two producers at one file
+     *   does not merge them — the second overwrites the first, silently. So each
+     *   engine gets its own: `ctrf/playwright.json`, `ctrf/checkout/`,
+     *   `ctrf/cross-tab/`.
+     *
+     * `npm run clean` clears both when a fresh report is wanted.
+     */
     reporter: [
         ['list'],
         ['html', { open: 'never' }],
+        ['allure-playwright', { resultsDir: 'allure-results', detail: true, suiteTitle: true }],
+        ['playwright-ctrf-json-reporter', { outputDir: 'ctrf', outputFile: 'playwright.json' }],
     ],
 
     use: {

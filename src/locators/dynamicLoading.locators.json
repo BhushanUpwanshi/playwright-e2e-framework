@@ -1,0 +1,5 @@
+{
+  "startButton": "#start button",
+  "loadingIndicator": "#loading",
+  "result": "#finish h4"
+}

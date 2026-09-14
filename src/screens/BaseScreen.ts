@@ -37,6 +37,18 @@ export abstract class BaseScreen {
     /** Selector proving the screen has rendered. */
     protected abstract readonly anchor: string;
 
+    /**
+     * Which application this screen belongs to.
+     *
+     * Defaults to Sauce Demo, which most screens here target. Screens for
+     * another application override it — the framework drives two, and baking one
+     * base URL into the class every screen inherits from would make the second
+     * impossible to express.
+     */
+    protected get baseUrl(): string {
+        return BASE_URLS.sauceDemo;
+    }
+
     constructor(page: Page, soft: SoftAssert = new SoftAssert()) {
         this.page = page;
         this.soft = soft;
@@ -48,7 +60,7 @@ export abstract class BaseScreen {
      * @returns This screen, for chaining.
      */
     async open(): Promise<this> {
-        await navigateTo(this.page, `${BASE_URLS.sauceDemo}${this.path}`);
+        await navigateTo(this.page, `${this.baseUrl}${this.path}`);
         return this.waitUntilLoaded();
     }
 

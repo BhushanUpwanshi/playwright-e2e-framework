@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push makes an in-flight run irrelevant; browser jobs are slow enough
+# that letting superseded runs finish wastes real minutes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # playwright-standalone's postinstall already fetches Chromium, but a
+      # hosted runner still lacks the system libraries it needs to start.
+      - name: Install Chromium system dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # The rule the framework rests on: src/ must stay runner-agnostic, or
+      # tests/standalone silently stops being able to use it.
+      - name: Check layering
+        run: npm run check:layering
+
+      # No --reporter flag here: passing one on the CLI *replaces* the reporter
+      # list from the config, which would silently drop Allure and CTRF.
+      - name: Run Playwright suites (core + e2e)
+        run: npm test
+
+      - name: Run runner-less checkout journey
+        run: npm run test:standalone
+
+      # Fails on purpose and inverts its own exit code — it passes when the
+      # deliberate failure was captured as exactly one cross-tab video.
+      - name: Run runner-less cross-tab journey
+        run: npm run test:standalone:tabs
+
+      # always(): the reports are most useful when something failed.
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results/
+          retention-days: 7
+
+      - name: Upload CTRF reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctrf-reports
+          path: ctrf/
+          retention-days: 7
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      # Screenshots and the cross-tab video. Only worth keeping on a failure,
+      # except the cross-tab journey always produces one by design.
+      - name: Upload failure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore
