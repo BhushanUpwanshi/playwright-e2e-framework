@@ -1,0 +1,13 @@
+{
+  "prod": {
+    "expectedProductCount": 6,
+    "sortOptions": [
+      { "value": "az", "label": "Name (A to Z)" },
+      { "value": "za", "label": "Name (Z to A)" },
+      { "value": "lohi", "label": "Price (low to high)" },
+      { "value": "hilo", "label": "Price (high to low)" }
+    ],
+    "cheapestProduct": "Sauce Labs Onesie",
+    "dearestProduct": "Sauce Labs Fleece Jacket"
+  }
+}

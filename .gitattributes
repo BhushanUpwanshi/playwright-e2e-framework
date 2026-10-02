@@ -1,0 +1,13 @@
+# Normalise line endings in the repository to LF.
+#
+# Development happens on Windows and CI runs on Ubuntu; without this, every file
+# touched on Windows shows up as wholly rewritten in a diff. Checkouts still get
+# native endings locally.
+* text=auto eol=lf
+
+# Binary assets git must not try to normalise.
+*.png binary
+*.jpg binary
+*.webm binary
+*.mp4 binary
+*.zip binary

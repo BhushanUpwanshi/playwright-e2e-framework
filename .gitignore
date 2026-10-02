@@ -1,0 +1,27 @@
+node_modules/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Reports produced by either execution engine
+/allure-results/
+/allure-report/
+/ctrf/
+/failed-screenshots/
+
+# Never commit a storage state file — it holds live session cookies.
+# Listed before any such file exists, so the rule actually takes effect.
+*.storagestate.json
+auth.json
+states/
+
+.env
+.env.*
+!.env.example
+
+.DS_Store
+*.log

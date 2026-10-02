@@ -1,0 +1,42 @@
+{
+  "prod": {
+    "customer": {
+      "firstName": "Bhushan",
+      "lastName": "Upwanshi",
+      "postalCode": "411001"
+    },
+    "orders": [
+      {
+        "case": "single item",
+        "products": ["Sauce Labs Backpack"],
+        "expectedSubtotal": 29.99
+      },
+      {
+        "case": "several items",
+        "products": ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Onesie"],
+        "expectedSubtotal": 47.97
+      }
+    ],
+    "taxRate": 0.08,
+    "paymentInformation": "SauceCard #31337",
+    "shippingInformation": "Free Pony Express Delivery!",
+    "confirmationHeading": "Thank you for your order!",
+    "requiredFieldErrors": [
+      {
+        "case": "no first name",
+        "customer": { "firstName": "", "lastName": "Upwanshi", "postalCode": "411001" },
+        "expectedError": "Error: First Name is required"
+      },
+      {
+        "case": "no last name",
+        "customer": { "firstName": "Bhushan", "lastName": "", "postalCode": "411001" },
+        "expectedError": "Error: Last Name is required"
+      },
+      {
+        "case": "no postal code",
+        "customer": { "firstName": "Bhushan", "lastName": "Upwanshi", "postalCode": "" },
+        "expectedError": "Error: Postal Code is required"
+      }
+    ]
+  }
+}

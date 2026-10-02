@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
+
+    "strict": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@screens/*": ["src/screens/*"],
+      "@locators/*": ["src/locators/*"],
+      "@data/*": ["src/data/*"]
+    }
+  },
+  "include": ["src", "tests", "playwright.config.ts"],
+  "exclude": ["node_modules", "allure-results", "allure-report", "test-results", "playwright-report"]
+}
