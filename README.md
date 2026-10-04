@@ -38,10 +38,17 @@ flowchart TD
     coretests --> reports
 ```
 
-`tests/standalone/checkout.journey.ts` and `tests/runner/checkout.spec.ts` import
-the *same* screen modules. Not adapted copies — the same files. That is the whole
-claim, and it is enforced by a build check rather than a convention (see
-[Design decisions](#design-decisions)).
+Two flows are deliberately written **twice**, once for each engine, from the same
+screens — not adapted copies, the same modules:
+
+| Flow | Runner spec | Runner-less journey |
+|---|---|---|
+| Sauce Demo checkout | `tests/runner/checkout.spec.ts` | `tests/standalone/checkout.journey.ts` |
+| GitHub profile | `tests/runner/github-profile.spec.ts` | `tests/standalone/github-profile.journey.ts` |
+
+That duplication is the point: it is what demonstrates the domain layer is
+runner-agnostic rather than merely claimed to be, and the claim is enforced by a
+build check rather than a convention (see [Design decisions](#design-decisions)).
 
 ## What it tests
 
@@ -81,8 +88,10 @@ npx playwright install chromium
 npm run test              # both Playwright projects — core + e2e
 npm run test:core         # the framework's own tests (no network needed)
 npm run test:e2e          # the application suite
-npm run test:standalone   # the runner-less checkout journey
-npm run test:standalone:tabs   # the runner-less cross-tab journey
+npm run test:standalone          # runner-less checkout journey
+npm run test:standalone:tabs     # runner-less cross-tab journey
+npm run test:standalone:github   # runner-less GitHub profile journey
+npm run test:all                 # every suite, both engines
 
 npm run typecheck
 npm run check:layering    # enforces the runner-agnostic rule

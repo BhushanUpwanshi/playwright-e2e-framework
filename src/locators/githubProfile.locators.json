@@ -1,0 +1,12 @@
+{
+  "profileHeadline": "h3:has-text(\"Bhushan Here\")",
+  "profileTagline": "h2:has-text(\"^..^\")",
+  "username": "span.vcard-username, [itemprop=\"additionalName\"]",
+  "repositoriesTab": "a[data-tab-item=\"repositories\"]",
+
+  "repositoryFilter": "#your-repos-filter",
+  "repositoryLink": "h3 a[href*=\"/BhushanUpwanshi/\"]",
+
+  "repositoryName": "strong[itemprop=\"name\"] a",
+  "aboutHeading": "h2:has-text(\"About\")"
+}

@@ -16,6 +16,8 @@ export interface BaseUrls {
     sauceDemo: string;
     /** the-internet — dynamic and multi-window pages, used by the standalone suite. */
     theInternet: string;
+    /** GitHub — the author profile journey. */
+    github: string;
 }
 
 const URLS_BY_ENV: Readonly<Record<Env, BaseUrls>> = {
@@ -24,14 +26,17 @@ const URLS_BY_ENV: Readonly<Record<Env, BaseUrls>> = {
     dev: {
         sauceDemo: 'https://www.saucedemo.com',
         theInternet: 'https://the-internet.herokuapp.com',
+        github: 'https://github.com',
     },
     qa: {
         sauceDemo: 'https://www.saucedemo.com',
         theInternet: 'https://the-internet.herokuapp.com',
+        github: 'https://github.com',
     },
     prod: {
         sauceDemo: 'https://www.saucedemo.com',
         theInternet: 'https://the-internet.herokuapp.com',
+        github: 'https://github.com',
     },
 };
 
