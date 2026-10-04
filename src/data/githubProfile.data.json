@@ -1,0 +1,17 @@
+{
+  "prod": {
+    "username": "BhushanUpwanshi",
+    "expectedHeadline": "Bhushan Here",
+    "expectedTagline": "^..^",
+    "repositoriesToFind": [
+      {
+        "name": "playwright-standalone",
+        "note": "published npm package"
+      },
+      {
+        "name": "playwright-e2e-framework",
+        "note": "this repository"
+      }
+    ]
+  }
+}

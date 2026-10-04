@@ -14,24 +14,39 @@ const VALID_ENVS: readonly Env[] = ['dev', 'qa', 'prod'];
 export interface BaseUrls {
     /** Sauce Demo — stable e-commerce flow, used by the runner suite. */
     sauceDemo: string;
-    /** the-internet — dynamic and multi-window pages, used by the standalone suite. */
+    /**
+     * the-internet — dynamic and multi-window pages, used by the standalone suite.
+     * A local copy by default; set `THE_INTERNET_URL` to target the real site.
+     */
     theInternet: string;
+    /** GitHub — the author profile journey. */
+    github: string;
 }
 
+/**
+ * Where the cross-tab journey serves its local copy of the-internet. The public
+ * Heroku app times out often enough to fail CI on its own, and the journey only
+ * needs three static pages from it.
+ */
+const THE_INTERNET_URL = process.env.THE_INTERNET_URL || 'http://127.0.0.1:4010';
+
 const URLS_BY_ENV: Readonly<Record<Env, BaseUrls>> = {
-    // All three point at the same public sites; the split exists so the shape
+    // All three point at the same targets; the split exists so the shape
     // matches a real project, where these would differ per environment.
     dev: {
         sauceDemo: 'https://www.saucedemo.com',
-        theInternet: 'https://the-internet.herokuapp.com',
+        theInternet: THE_INTERNET_URL,
+        github: 'https://github.com',
     },
     qa: {
         sauceDemo: 'https://www.saucedemo.com',
-        theInternet: 'https://the-internet.herokuapp.com',
+        theInternet: THE_INTERNET_URL,
+        github: 'https://github.com',
     },
     prod: {
         sauceDemo: 'https://www.saucedemo.com',
-        theInternet: 'https://the-internet.herokuapp.com',
+        theInternet: THE_INTERNET_URL,
+        github: 'https://github.com',
     },
 };
 

@@ -2,8 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { StandAloneClass } from 'playwright-standalone';
 import { SoftAssert } from '@core/assertions/SoftAssert';
+import { BASE_URLS } from '@core/config/env';
 import { DynamicLoadingScreen } from '@screens/DynamicLoadingScreen';
 import { MultiWindowScreen } from '@screens/MultiWindowScreen';
+import { serveTheInternet } from './support/theInternetServer';
 
 /**
  * A journey that spans two browser tabs, ending in a failure.
@@ -22,6 +24,10 @@ import { MultiWindowScreen } from '@screens/MultiWindowScreen';
  *
  * The last step fails on purpose: videos are only written for failures, so a
  * fully passing journey would produce no artifact at all.
+ *
+ * The pages are served locally (see `support/theInternetServer.ts`); set
+ * `THE_INTERNET_URL=https://the-internet.herokuapp.com` to run against the real
+ * site instead.
  *
  * Run with: npm run test:standalone:tabs
  */
@@ -94,7 +100,9 @@ journey.describe('Cross-tab journey', () => {
 });
 
 void (async () => {
+    const server = await serveTheInternet(BASE_URLS.theInternet);
     const exitCode = await journey.execute({ video: true });
+    await server?.close();
 
     if (soft.hasFailures()) {
         console.error('\nSoft assertion failures:');

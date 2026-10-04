@@ -5,6 +5,7 @@
   "description": "Playwright E2E framework whose page objects are runner-agnostic — the same screens drive @playwright/test specs and runner-less journeys via playwright-standalone.",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "check:authorship": "node scripts/check-authorship.js",
     "check:layering": "node scripts/check-layering.js",
     "clean": "node -e \"for (const d of ['allure-results','allure-report','ctrf','test-results','playwright-report']) require('node:fs').rmSync(d,{recursive:true,force:true})\"",
     "test": "playwright test",
@@ -13,7 +14,8 @@
     "test:headed": "playwright test --project=e2e --headed",
     "test:standalone": "tsx tests/standalone/checkout.journey.ts",
     "test:standalone:tabs": "tsx tests/standalone/multi-window.journey.ts",
-    "test:all": "npm run test && npm run test:standalone && npm run test:standalone:tabs",
+    "test:standalone:github": "tsx tests/standalone/github-profile.journey.ts",
+    "test:all": "npm run test && npm run test:standalone && npm run test:standalone:tabs && npm run test:standalone:github",
     "report": "playwright show-report",
     "report:allure": "allure generate allure-results --clean -o allure-report && allure open allure-report"
   },
