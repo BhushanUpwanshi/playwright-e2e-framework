@@ -55,7 +55,7 @@ build check rather than a convention (see [Design decisions](#design-decisions))
 | Application | Why |
 |---|---|
 | [Sauce Demo](https://www.saucedemo.com) | A complete e-commerce flow — sign-in, catalogue, cart, checkout, order confirmation |
-| [the-internet](https://the-internet.herokuapp.com) | Multi-window and slow-render pages, which exercise what the runner-less engine is for |
+| [the-internet](https://the-internet.herokuapp.com) | Multi-window and slow-render pages, which exercise what the runner-less engine is for. Served from a local copy in `tests/standalone/fixtures/` by default; set `THE_INTERNET_URL` to use the live site |
 
 ## Layout
 
