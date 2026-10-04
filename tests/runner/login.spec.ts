@@ -1,6 +1,8 @@
 import { test, expect } from './fixtures/screens.fixture';
 import { forEnv } from '@core/config/dataset';
+import { isVisible } from '@core/interactions/query';
 import loginData from '@data/login.data.json';
+import loginLocators from '@locators/login.locators.json';
 
 const data = forEnv(loginData);
 
@@ -71,7 +73,7 @@ test.describe('Sign in', () => {
 
         expect(inventoryScreen.currentUrl()).not.toContain('/inventory.html');
         soft.assertTrue(
-            await inventoryScreen.rawPage.locator('[data-test="login-button"]').isVisible(),
+            await isVisible(inventoryScreen.rawPage, loginLocators.loginButton),
             'sign-in form should be showing after signing out'
         );
     });
